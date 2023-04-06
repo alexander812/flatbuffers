@@ -1,9 +1,12 @@
 import React from "react";
-
+import * as flatbuffers from "flatbuffers";
 import "./App.css";
 
-const handleFileRead = (data: unknown) => {
-  console.log(["data", data]);
+const handleFileRead = (data: ArrayBuffer) => {
+  const uData = new Uint8Array(data);
+  const buf = new flatbuffers.ByteBuffer(uData);
+
+  console.log(["handleFileRead", data, buf]);
 };
 
 export const App: React.FC = () => {
@@ -15,7 +18,7 @@ export const App: React.FC = () => {
       const reader = new FileReader();
 
       reader.onload = function (e) {
-        if (e.target) {
+        if (e.target && e.target.result instanceof ArrayBuffer) {
           handleFileRead(e.target.result);
         }
       };
@@ -24,7 +27,7 @@ export const App: React.FC = () => {
         console.log("Error : " + e.type);
       };
 
-      reader.readAsBinaryString(file);
+      reader.readAsArrayBuffer(file);
     }
   }, []);
 
