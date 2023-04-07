@@ -1,12 +1,19 @@
 import React from "react";
 import * as flatbuffers from "flatbuffers";
 import "./App.css";
+import { Message, MessageT } from "./generated_2_0_8/milky_generated";
 
 const handleFileRead = (data: ArrayBuffer) => {
   const uData = new Uint8Array(data);
   const buf = new flatbuffers.ByteBuffer(uData);
 
   console.log(["handleFileRead", data, buf]);
+
+  const fb_buffer = new flatbuffers.ByteBuffer(uData);
+  const msg = Message.getRootAsMessage(fb_buffer); //ыва
+
+  console.log("sdfsdf", uData.length, msg.unpack());
+  console.log("qweqwe", JSON.stringify(uData));
 };
 
 export const App: React.FC = () => {
